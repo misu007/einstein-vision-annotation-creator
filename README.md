@@ -30,7 +30,7 @@ http://localhost:5000
 ### 使い方
 
 #### 画像の読み込み
-ドラッグ＆ドロップするか、左上をクリックします。
+ドラッグ＆ドロップするか、左上にある+ボタンをクリックします。
 <img src="https://github.com/misu007/einstein-vision-annotation-creator/blob/master/readme/img001.gif"/>
 
 #### ラベルの作成
