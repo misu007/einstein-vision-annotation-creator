@@ -204,12 +204,6 @@ $(function(){
 		});	
 	});
 
-
-	$(document).on('click','.logoutbutton', function(){
-		if(window.confirm('Logout?')){
-			location.href = '/logout';
-		}
-	});
 	$(document).on('click','.dt-label:not(.active)', function(){
 		$('.dt-label').removeClass('active');
 		$(this).addClass('active');
@@ -277,7 +271,7 @@ $(function(){
 
 
 	$(document).on('click','.del-dt-label:not(.disabled)', function(){
-		if(window.confirm('Seriously?')){
+		if(window.confirm('本当に削除しますか?')){
 			delDtLabel($(this).attr('data-id'));
 		}
 	});
@@ -844,7 +838,7 @@ function uploadedImgFiles(dataTransfer){
 						//
 						// Zip file 
 						//
-						if(window.confirm('The current work will disapear. Is it OK?')){
+						if(window.confirm('現在の作業内容は削除されます。zipファイルを読み込みますか？')){
 							dtLabelList = [];
 							annotations = {};
 							$('#od-new-img-t-list').html('');

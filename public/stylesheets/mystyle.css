@@ -582,7 +582,7 @@ input.form-control, select.form-control {
 	background-color: transparent;
 	border-radius: 0px;
 	border: none;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 .navbar-default .navbar-brand {
 	padding-top: 2.5rem;

@@ -2,9 +2,10 @@ var sslRedirect = require('heroku-ssl-redirect');
 var express = require('express');
 var bodyParser = require('body-parser');
 var async = require('async');
-var main = require('./app/main.js');
 var app = express();
 var fs = require('fs');
+var archiver = require('archiver');
+var moment = require('moment');
 var unzip = require('unzip2');
 var csvSync = require('csv-parse/lib/sync');
 var portNum = (process.env.PORT || 5000);
@@ -18,15 +19,11 @@ app.use(bodyParser.json({limit: '700mb'}));
 app.use(bodyParser.urlencoded({limit: '700mb', extended: true, parameterLimit:50000}));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-
-
 app.get('/', function(req, res) {
 	res.setHeader('Content-Type', 'text/html');
 	res.render('pages/index', {});
-	main.cleanSpool();	    
+	initDirectory();	    
 });
-
-
 app.post('/save', function(req, res){
 	try {
 		async.waterfall([
@@ -51,7 +48,6 @@ app.post('/save', function(req, res){
 		myError(err, res);
 	}
 });
-
 app.post('/save_zip', function(req, res){
 		var retObj = {};
 		async.waterfall([
@@ -120,14 +116,12 @@ app.post('/save_zip', function(req, res){
 			}
 		});
 });
-
-
 app.post('/csv2zip', function(req, res){
 	try {
 		async.waterfall([
 			function(callback){
 				var csvObj = JSON.parse(req.body.csv);
-				main.createZipFile(csvObj, callback);
+				createZipFile(csvObj, callback);
 			}], function (err, result){
 				if(err){
 					console.log('Error! ' + result);
@@ -139,11 +133,44 @@ app.post('/csv2zip', function(req, res){
 		myError(err, res);
 	}
 });
-
 module.exports = app;
 
 function myError(err, res){
     res.send(err);
 }
 
+function createZipFile(csvObj, callback){
+	var fileName = 'train_' + getRandomStr() + '.zip';
+	var filePath = '/data/' + fileName;
+	var output = fs.createWriteStream('./public' + filePath);
+	output.on('close', function() {
+		callback(null, {
+			name : fileName,
+			url : filePath
+		});
+	});
+	var archive = archiver('zip', {
+    	zlib: { level: 9 }
+	});
+	archive.pipe(output);
+	archive.append(csvObj.csv, { name: 'annotations.csv' });
+	var data = csvObj.file;
+	for (var key in data){
+		if (data.hasOwnProperty(key)){
+			archive.append(fs.createReadStream('./public/spool/' + key), { name: 'examples/' + key });
+		}
+	}
+	archive.finalize();
+}
+
+function initDirectory(){
+	if (!(fs.existsSync('./public/spool') && fs.statSync('./public/spool').isDirectory())) fs.mkdirSync('./public/spool');
+	if (!(fs.existsSync('./public/data') && fs.statSync('./public/data').isDirectory())) fs.mkdirSync('./public/data');
+	if (!(fs.existsSync('./data') && fs.statSync('./data').isDirectory())) fs.mkdirSync('./data');
+	if (!(fs.existsSync('./data/zip') && fs.statSync('./data/zip').isDirectory())) fs.mkdirSync('./data/zip');
+}
+
+function getRandomStr(){
+	return Math.floor(100000000000000000 * Math.random()).toString(32);
+}
 
