@@ -38,7 +38,7 @@ http://localhost:5000
 <img src="https://github.com/misu007/einstein-vision-annotation-creator/blob/master/readme/img002.gif"/>
 
 #### アノテーション作成
-付与したいラベルが青くなっていることを確認し（もし青でない場合は、クリックしてアクティブにしてください）画像上で、四角を描きます。
+付与したいラベルをクリックしアクティブにし、画像上で長方形の対角線上をなぞるようにドラッグ&ドロップします。
 <img src="https://github.com/misu007/einstein-vision-annotation-creator/blob/master/readme/img003.gif"/>
 
 #### アノテーションのサイズ変更
