@@ -51,13 +51,10 @@ function isKeyDown(key_code){
 
 $(function(){
 	var x = 0;
-    var y = 0;
+	var y = 0;
+	var _x;
+	var _y;
 
-    var _x;
-    var _y;
-    
-
-    
 	$('#od-new-img-canvas').mousedown(function(e){
 		var labelId = $('.dt-label.active').attr('data-id');
 		if(labelId != null && labelId.length > 0){
@@ -74,9 +71,9 @@ $(function(){
 					y = sq.s_y;
 					console.log('detect');
 					canvasMouseMode = 
-						sq.type == 'square' ? 'edit':
-						sq.type == 'center' ? 'move':
-						'new';
+					sq.type == 'square' ? 'edit':
+					sq.type == 'center' ? 'move':
+					'new';
 					targetCanvasAnnotation = {
 						id: sq.id,
 						label : sq.label,
@@ -86,25 +83,21 @@ $(function(){
 					break;
 				}
 			}
-
-
-
-		
-		    $('#od-new-img-canvas').bind('mousemove',function(e){
-			var railhead = e.target.getBoundingClientRect();
-			_x = e.clientX-railhead.left;
-			_y = e.clientY-railhead.top;
-			var thisRect = 
-			canvasMouseMode == 'move' ? [_x - (targetCanvasAnnotation.w / 2), _y - (targetCanvasAnnotation.h / 2), targetCanvasAnnotation.w, targetCanvasAnnotation.h]:
-			[x, y, _x-x, _y-y];
-			initCanvas(null, thisRect);
-		    });
+			$('#od-new-img-canvas').bind('mousemove',function(e){
+				var railhead = e.target.getBoundingClientRect();
+				_x = e.clientX-railhead.left;
+				_y = e.clientY-railhead.top;
+				var thisRect = 
+				canvasMouseMode == 'move' ? [_x - (targetCanvasAnnotation.w / 2), _y - (targetCanvasAnnotation.h / 2), targetCanvasAnnotation.w, targetCanvasAnnotation.h]:
+				[x, y, _x-x, _y-y];
+				initCanvas(null, thisRect);
+			});
 		} else {
 			alert('ラベルが選択されていません。まだラベルを作成していない場合は、まずラベルを作成してください。');
 		}
-    });
-    
-    $('#od-new-img-canvas').mouseup(function(){
+	});
+
+	$('#od-new-img-canvas').mouseup(function(){
 		$('#od-new-img-canvas').unbind('mousemove');
 		var targetFile = $('#od-new-img-canvas').attr('data-file');
 		var ww;
@@ -122,13 +115,12 @@ $(function(){
 			ww = _x - x;
 			hh = _y - y;
 		}
-
 		createLabelAnnotation(targetFile, xx, yy, ww, hh, isKeyDown(16));
-    });
+	});
 
-    $(window).on('resize', function(){
-    	initCanvas();
-    });
+	$(window).on('resize', function(){
+		initCanvas();
+	});
 	$(document).on('click','.init-canvas-trigger', function(){
 		//initCanvas();
 	});
@@ -164,9 +156,7 @@ $(function(){
 		e.stopPropagation();
 		dnd = 0;
 		setTimeout(function(){
-			if (dnd == 0){
-				$('#mydd').removeClass('active');
-			}
+			if (dnd == 0) $('#mydd').removeClass('active');
 		},100);
 
 	});
@@ -174,21 +164,9 @@ $(function(){
 		$('#mydd').removeClass('active');
 		e.preventDefault();
 		var dataTransfer =  e.originalEvent.dataTransfer;
-		if ($('#new-object-detection-page').hasClass('active')){
-			uploadedImgFiles(dataTransfer);
-		}
+		if ($('#new-object-detection-page').hasClass('active')) uploadedImgFiles(dataTransfer);
 		return false;	
-	});
-	
-
-	$(document).on('submit','.loginform',function(){	
-		return false;
-	});
-
-	$(document).on('change','#model-select',function(){	
-		resetPredictArea();
-	});
-
+	});	
 	$(document).on('change','#dummy-nod-files',function(e){
 		uploadedImgFiles(e.target);
 	});
@@ -323,10 +301,6 @@ $(function(){
 	$(document).on('click','.reload-models:not(.disabled)',function(){
 		getModels();
 	});
-	$(document).on('click','.logoutbutton:not(.disabled)',function(){	
-		resetPredictArea();	
-		afterLogoutAjax();			
-	});
 });
 
 function changeAnnotationLabel(orgLabel, newLabel){
@@ -336,9 +310,7 @@ function changeAnnotationLabel(orgLabel, newLabel){
 			var annSize = anns.length;
 			for (var i = 0; i < annSize; i ++){
 				var ann = anns[i];
-				if (ann.label == orgLabel){
-					annotations[key][i].label = newLabel;
-				}
+				if (ann.label == orgLabel) annotations[key][i].label = newLabel;
 			}
 		}
 	}
@@ -357,9 +329,7 @@ function createDtModel(){
 			var anns = annotations[key];
 			var annSize = anns.length;
 			if (annSize > 0){
-				if (csvObj.boxMax < annSize){
-					csvObj.boxMax = annSize;
-				}
+				if (csvObj.boxMax < annSize) csvObj.boxMax = annSize;
 				csvObj.element[key] = [];
 				csvObj.file[key] = [];
 				for (var i = 0; i < annSize; i ++){
@@ -371,7 +341,7 @@ function createDtModel(){
 						',""height"":' + Math.round(ann.height) + 
 						',""width"":' + Math.round(ann.width) + 
 						'}"'
-					);
+						);
 					csvObj.file[key].push({
 						x : Math.round(ann.x),
 						y : Math.round(ann.y),
@@ -650,59 +620,56 @@ function elmLabelAnnotaion(i, ann){
 
 function initCanvas(focusId, selecting){
 	if (canvasImgSrc != null && canvasImgSrc.length > 2){
-			var img = new Image();
-			img.onload = function () {
-				var tw, th;
-				if (viewMode){
-					tw = $('#od-new-img-canvas').parent().width();
-					th = tw * img.height / img.width;	
-				} else {
-					th = window.innerHeight - 260;
-					tw = th * img.width / img.height;	
+		var img = new Image();
+		img.onload = function () {
+			var tw, th;
+			if (viewMode){
+				tw = $('#od-new-img-canvas').parent().width();
+				th = tw * img.height / img.width;	
+			} else {
+				th = window.innerHeight - 260;
+				tw = th * img.width / img.height;	
 
-				}
-				$('#dt-create-canvas-container').css('height', th + 'px');
-				$('#od-new-img-canvas').attr('data-img-width', img.width);
-				$('#od-new-img-canvas').attr('data-img-height', img.height);
-				canvas.width = tw;
-				canvas.height = th;
-			  	ctx.drawImage(img, 0, 0, tw, th);
+			}
+			$('#dt-create-canvas-container').css('height', th + 'px');
+			$('#od-new-img-canvas').attr('data-img-width', img.width);
+			$('#od-new-img-canvas').attr('data-img-height', img.height);
+			canvas.width = tw;
+			canvas.height = th;
+			ctx.drawImage(img, 0, 0, tw, th);
 
-			  	// Grid Line
-			  	if (gridMode){
-			  		drawGrid(tw, th, ctx);
-			  	}
+			  	if (gridMode) drawGrid(tw, th, ctx);
 
 			  	var targetFile = $('#od-new-img-canvas').attr('data-file');
-				var anns = annotations[targetFile];
-				if (anns != null){
-					for (var i = 0; i < anns.length; i ++){
-						var color = 
-						focusId && focusId == i ? 'rgb(208,52,132)' :
-						canvasMouseMode == 'edit' && targetCanvasAnnotation.id == i ? 'rgb(160,255,0)':
-						 'rgb(160,255,0)';
-						var ann = anns[i];
-						mystrokeRect(
-							convImg2Canvas(ann.x) + 0.5,
-							convImg2Canvas(ann.y) + 0.5,
-							convImg2Canvas(ann.width),
-							convImg2Canvas(ann.height),
-							color, true, ann.label
-						);
-					}
-				}
-				if (selecting){
-					var color = 'rgb(208,52,132)';
-					mystrokeRect(selecting[0], selecting[1], selecting[2], selecting[3], color);
-				}
+			  	var anns = annotations[targetFile];
+			  	if (anns != null){
+			  		for (var i = 0; i < anns.length; i ++){
+			  			var color = 
+			  			focusId && focusId == i ? 'rgb(208,52,132)' :
+			  			canvasMouseMode == 'edit' && targetCanvasAnnotation.id == i ? 'rgb(160,255,0)':
+			  			'rgb(160,255,0)';
+			  			var ann = anns[i];
+			  			mystrokeRect(
+			  				convImg2Canvas(ann.x) + 0.5,
+			  				convImg2Canvas(ann.y) + 0.5,
+			  				convImg2Canvas(ann.width),
+			  				convImg2Canvas(ann.height),
+			  				color, true, ann.label
+			  				);
+			  		}
+			  	}
+			  	if (selecting){
+			  		var color = 'rgb(208,52,132)';
+			  		mystrokeRect(selecting[0], selecting[1], selecting[2], selecting[3], color);
+			  	}
+			  }
+			  img.src = canvasImgSrc;
 			}
-			img.src = canvasImgSrc;
-	}
-}
+		}
 
 
 
-function drawGrid(w, h, tctx){
+		function drawGrid(w, h, tctx){
 	// filter
 	tctx.fillStyle = "rgba(0, 0, 0, .3)";
 	tctx.fillRect(0, 0, w, h);
@@ -767,16 +734,16 @@ function drawGrid(w, h, tctx){
 function mystrokeRect(x, y, w, h, color, expand, label){
 	ctx.strokeStyle = color;
 	ctx.lineWidth = 1.5;
-  	ctx.strokeRect(x, y, w, h);
+	ctx.strokeRect(x, y, w, h);
 	if (expand){
 
 		if (labelMode && label && label.length > 0){
 			ctx.font="15px Arial";
-		  	ctx.fillStyle = 'rgba(0, 0, 0, .5)';
+			ctx.fillStyle = 'rgba(0, 0, 0, .5)';
 			var wi = ctx.measureText(label).width;
 			ctx.fillRect(x, (y - 20), (wi + 10), 20);
-		  	ctx.textBaseline = 'middle';
-		  	ctx.fillStyle = color;
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = color;
 			ctx.fillText(label, (x + 5), (y - 10));
 		}
 
