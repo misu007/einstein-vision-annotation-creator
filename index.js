@@ -52,13 +52,6 @@ app.post('/save_zip', function(req, res){
 		var retObj = {};
 		async.waterfall([
 			function(callback){
-				if (!(fs.existsSync('./public/spool'))){  
-					fs.mkdirSync('./public/spool');
-				}
-				if (!(fs.existsSync('./data/zip'))){  
-					fs.mkdirSync('./data/zip');
-				}
-
 				var dat = new Buffer(req.body.b64, 'base64');
 				var fileName = req.body.fileName;
 				var filePath = './data/zip/' + fileName;
