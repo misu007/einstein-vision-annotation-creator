@@ -14,7 +14,7 @@ npm install
 
 ### アプリ起動
 ```
-nom start
+npm start
 ```
 
 webブラウザ（Chrome推奨）で
