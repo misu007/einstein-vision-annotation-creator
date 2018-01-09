@@ -7,14 +7,14 @@ Einstein Vision オブジェクト検出のカスタムモデルを作成する�
 
 コマンドラインで任意のフォルダに移動し、
 ```
-git clone https://github.com/misu007/einstein-vision-anotation-creator.git
-cd einstein-vision-anotation-creator
-npm install
+# git clone https://github.com/misu007/einstein-vision-anotation-creator.git
+# cd einstein-vision-anotation-creator
+# npm install
 ```
 
 ### アプリ起動
 ```
-npm start
+# npm start
 ```
 
 webブラウザ（Chrome推奨）で
