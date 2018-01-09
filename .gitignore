@@ -9,4 +9,4 @@ docker-compose.yml
 public/spool
 public/data
 data/zip
-spool2
+package-lock.json
