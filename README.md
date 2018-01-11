@@ -2,7 +2,6 @@
 
 Einstein Vision オブジェクト検出のカスタムモデルを作成する際に必要な、Annotations.csvファイルを簡単に生成するためのサンプルツールです。ローカル環境で動作するnode.js製Webアプリになります。
 
-<img src="https://github.com/misu007/einstein-vision-annotation-creator/blob/master/readme/img000.png"/>
 
 ## 利用方法
 ### インストール
@@ -43,7 +42,6 @@ http://localhost:5000
 
 #### アノテーションのサイズ変更
 ４隅の四角をドラッグします。
-<img src="https://github.com/misu007/einstein-vision-annotation-creator/blob/master/readme/img006.gif"/>
 
 #### アノテーションの移動
 ＋マークをドラッグします。
@@ -55,7 +53,6 @@ Shiftキーをクリックしながら、＋マークをドラッグします。
 
 #### ビューの変更
 　Gキー、Lキー、Vキーで　グリッド表示切替、ラベル表示切替、サイズ変更が可能です。
-<img src="https://github.com/misu007/einstein-vision-annotation-creator/blob/master/readme/img007.gif"/>
 
 
 
